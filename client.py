@@ -32,6 +32,9 @@ def pre_init():
 
   client = Client(**client_json)
 
+  # TODO: Отправка информации о клиенте на сервер
+  # client.register()
+
   with open("client.json", mode="w+", encoding="UTF-8") as json_file:
     json.dump(asdict(client), json_file)
 
@@ -45,3 +48,19 @@ templates = Jinja2Templates(directory="templates")
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
   return templates.TemplateResponse("index.html", {"request": request})
+
+@app.post("/play")
+async def play():
+  pass
+
+@app.post("/pause")
+async def pause():
+  pass
+
+@app.post("/stop")
+async def stop():
+  pass
+
+@app.get("/info")
+async def get_info():
+  pass
