@@ -5,6 +5,30 @@ from fastapi.templating import Jinja2Templates
 
 import socket
 
+from dataclasses import dataclass, asdict
+import os
+import json
+
+@dataclass
+class Client:
+  name: str = ""
+  place: str = ""
+  tvs_count: int = 0
+
+def pre_init():
+  client_json = {}
+
+  if os.path.exists("client.json"):
+    with open("client.json", mode="r", encoding="UTF-8") as json_file:
+      client_json = json.load(json_file)
+
+  client = Client(**client_json)
+
+  with open("client.json", mode="w+", encoding="UTF-8") as json_file:
+    json.dump(asdict(client), json_file)
+
+pre_init()
+
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
