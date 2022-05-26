@@ -44,7 +44,4 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
-  hostname = socket.gethostname()
-  local_ip = socket.gethostbyname(hostname)
-
-  return templates.TemplateResponse("index.html", {"request": request, "ip": local_ip})
+  return templates.TemplateResponse("index.html", {"request": request})
