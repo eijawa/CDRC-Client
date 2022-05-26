@@ -7,17 +7,21 @@
   },
   "handlers": {
     "file": {
-      "class": "logging.handlers.RotatingFileHandler",
+      "class": "logging.handlers.TimedRotatingFileHandler",
       "formatter": "clientFormatter",
       "filename": "logs/client.log",
-      "backupCount": 2
+      "backupCount": 3,
+      "utc": true,
+      "when": "D",
+      "interval": 3,
+      "encoding": "UTF-8"
     }
   },
   "loggers": {
     "clientLogger": {
       "level": "DEBUG",
       "handlers": ["file"],
-      "propagate": "False"
+      "propagate": false
     }
   },
   "root": {
