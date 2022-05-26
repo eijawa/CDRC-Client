@@ -5,7 +5,7 @@ from fastapi.templating import Jinja2Templates
 
 import socket
 
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, field
 import os
 import json
 
@@ -14,6 +14,14 @@ class Client:
   name: str = ""
   place: str = ""
   tvs_count: int = 0
+  ip: str = ""
+
+  def __post_init__(self):
+    self.ip = self.__set_ip()
+
+  def __set_ip(self) -> str:
+    hostname = socket.gethostname()
+    return socket.gethostbyname(hostname)
 
 def pre_init():
   client_json = {}
