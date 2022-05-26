@@ -56,7 +56,6 @@ coverage.xml
 *.pot
 
 # Django stuff:
-*.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
@@ -131,4 +130,9 @@ dmypy.json
 
 # Project IGNORE
 content/
+
 client.json
+
+*.log
+# Для архивированных файлов, поскольку к их расширению добавляется значение времени
+logs/*.log*
