@@ -9,6 +9,16 @@ from dataclasses import dataclass, asdict, field
 import os
 import json
 
+import logging
+
+with open("client_logging_conf.json", mode="r", encoding="UTF-8") as logging_conf_file:
+  logging_conf = json.load(logging_conf_file)
+
+  if not os.path.exists("logs"):
+    os.mkdir("logs")
+
+  logging.config.dictConfig(logging_conf)
+
 @dataclass
 class Client:
   name: str = ""
@@ -18,6 +28,8 @@ class Client:
 
   def __post_init__(self):
     self.ip = self.__set_ip()
+
+    logging.info("Init Client class")
 
   def __set_ip(self) -> str:
     hostname = socket.gethostname()

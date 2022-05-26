@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "formatters": {
+    "clientFormatter": {
+      "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    }
+  },
+  "handlers": {
+    "file": {
+      "class": "logging.handlers.RotatingFileHandler",
+      "formatter": "clientFormatter",
+      "filename": "logs/client.log",
+      "backupCount": 2
+    }
+  },
+  "loggers": {
+    "clientLogger": {
+      "level": "DEBUG",
+      "handlers": ["file"],
+      "propagate": "False"
+    }
+  },
+  "root": {
+    "level": "DEBUG",
+    "handlers": ["file"]
+  }
+}
