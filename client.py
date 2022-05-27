@@ -11,6 +11,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 import socket
+import requests
 
 from dataclasses import dataclass, asdict, field
 import json
@@ -28,7 +29,7 @@ with open("client_logging_conf.json", mode="r", encoding="UTF-8") as logging_con
 @dataclass
 class Client:
   name: str = ""
-  place: str = ""
+  address: str = ""
   tvs_count: int = 0
   ip: str = ""
 
@@ -42,8 +43,7 @@ class Client:
     return socket.gethostbyname(hostname)
 
   def register(self):
-    # TODO: Отправка данных клиента на SERVER_ADDR/register
-    pass
+    requests.put(SERVER_ADDR + "/register", json=asdict(self))
 
 def pre_init():
   client_json = {}
@@ -54,8 +54,7 @@ def pre_init():
 
   client = Client(**client_json)
 
-  # TODO: Отправка информации о клиенте на сервер
-  # client.register()
+  client.register()
 
   with open("client.json", mode="w+", encoding="UTF-8") as json_file:
     json.dump(asdict(client), json_file)
