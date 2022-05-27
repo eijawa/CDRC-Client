@@ -13,7 +13,8 @@ from fastapi.templating import Jinja2Templates
 import socket
 import requests
 
-from dataclasses import dataclass, asdict, field
+# from dataclasses import dataclass, asdict, field
+from pydantic import BaseModel
 import json
 
 import logging
@@ -26,8 +27,7 @@ with open("client_logging_conf.json", mode="r", encoding="UTF-8") as logging_con
 
   logging.config.dictConfig(logging_conf)
 
-@dataclass
-class Client:
+class Client(BaseModel):
   name: str = ""
   address: str = ""
   tvs_count: int = 0
@@ -43,21 +43,24 @@ class Client:
     return socket.gethostbyname(hostname)
 
   def register(self):
-    requests.put(SERVER_ADDR + "/register", json=asdict(self))
+    requests.put(SERVER_ADDR + "/register", data=self.json())
 
 def pre_init():
-  client_json = {}
+  # Так сделано, поскольку Pydantic parse_raw
+  # воспринимает только строку (str), 
+  # внутри которой находится словарь (json)
+  client_json = "{}"
 
   if os.path.exists("client.json"):
     with open("client.json", mode="r", encoding="UTF-8") as json_file:
       client_json = json.load(json_file)
 
-  client = Client(**client_json)
+  client = Client.parse_raw(client_json)
 
   client.register()
 
   with open("client.json", mode="w+", encoding="UTF-8") as json_file:
-    json.dump(asdict(client), json_file)
+    json.dump(client.json(), json_file)
 
 pre_init()
 
