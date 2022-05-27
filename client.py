@@ -1,3 +1,10 @@
+import os
+
+from dotenv import load_dotenv
+load_dotenv()
+
+SERVER_ADDR = os.getenv("SERVER_ADDR")
+
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -6,7 +13,6 @@ from fastapi.templating import Jinja2Templates
 import socket
 
 from dataclasses import dataclass, asdict, field
-import os
 import json
 
 import logging
@@ -34,6 +40,10 @@ class Client:
   def __set_ip(self) -> str:
     hostname = socket.gethostname()
     return socket.gethostbyname(hostname)
+
+  def register(self):
+    # TODO: Отправка данных клиента на SERVER_ADDR/register
+    pass
 
 def pre_init():
   client_json = {}
